@@ -13,7 +13,7 @@ title                    : "Fabian Seiler"
 title_separator          : "-"
 name                     : &name "Fabian Seiler"
 description              : &description "Your Name's academic portfolio"   # Update this with a general description of your site, this is the default if not overridden by a page
-url                      : https://academicpages.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
+url                      : https://fabianseiler.github.io # The base hostname & protocol for your site e.g. "https://[your GitHub username].github.io",
                                                            # or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "fabianseiler/fabianseiler.github.io"
@@ -26,8 +26,8 @@ author:
   avatar           : "profile.png"
   name             : "Fabian Seiler"
   pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
-  location         : "Earth"
+  bio              : "Fabian Seiler is a Ph.D. researcher with the EclectX group at Heidelberg University, Germany. He received his B.Sc. in Electrical Engineering and Information Technology (2023) and M.Sc. in Embedded Systems (2025) from TU Wien, Austria. His research focuses on memristive in-memory computing, approximate computing, and the development of efficient computing architectures and design tools. "
+  location         : "Heidelberg, Germany"
   employer         : "Heidelberg University"
   uri              : # URL
   email            : "fabian.seiler@ziti.uni-heidelberg.de" 
@@ -51,13 +51,13 @@ author:
   bitbucket        : # Username - Update with your username on the site
   codepen          : # Username
   dribbble         : # Username
-  github           : "academicpages"
+  github           : "fabianseiler"
   kaggle           : # Username  
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
 
   # Social media
   artstation       : # Username
-  bluesky          : "bsky.app" # Replace this with you Bluesky username
+  bluesky          : # Replace this with you Bluesky username
   facebook         : # Username
   flickr           : # Username
   foursquare       : # Username

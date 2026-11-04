@@ -6,31 +6,203 @@ author_profile: true
 ---
 
 {% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
+<p>You can also find my publications on <a href="{{ site.author.googlescholar }}">Google Scholar</a>.</p>
 {% endif %}
 
-{% include base_path %}
+{% comment %}
+Sort ALL publications by date, showing newest first. Add global numbers 1..N
+in displayed order, plus independent category identifiers numbered oldest-to-newest.
+Recognized category values:
+  manuscripts, journal, journals  => J
+  conferences, conference         => C
+  thesis, theses                  => T
+  books, book                     => B
+  preprints, preprint             => P
+Unknown categories receive an O number, so they are not silently hidden.
+{% endcomment %}
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
+{% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
+
+{% assign journals_left = 0 %}
+{% assign conferences_left = 0 %}
+{% assign theses_left = 0 %}
+{% assign books_left = 0 %}
+{% assign preprints_left = 0 %}
+{% assign others_left = 0 %}
+
+{% for pub in sorted_pubs %}
+  {% assign cat = pub.category | default: '' | downcase | strip %}
+  {% if cat == 'manuscripts' or cat == 'journal' or cat == 'journals' %}
+    {% assign journals_left = journals_left | plus: 1 %}
+  {% elsif cat == 'conferences' or cat == 'conference' %}
+    {% assign conferences_left = conferences_left | plus: 1 %}
+  {% elsif cat == 'thesis' or cat == 'theses' %}
+    {% assign theses_left = theses_left | plus: 1 %}
+  {% elsif cat == 'books' or cat == 'book' %}
+    {% assign books_left = books_left | plus: 1 %}
+  {% elsif cat == 'preprints' or cat == 'preprint' %}
+    {% assign preprints_left = preprints_left | plus: 1 %}
+  {% else %}
+    {% assign others_left = others_left | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+<div class="pub-legend" aria-label="Publication type legend">
+  <span class="pub-legend-item"><span class="pub-id pub-id--journal">J</span> Journal</span>
+  <span class="pub-legend-item"><span class="pub-id pub-id--conference">C</span> Conference</span>
+  <span class="pub-legend-item"><span class="pub-id pub-id--thesis">T</span> Thesis</span>
+  <span class="pub-legend-item"><span class="pub-id pub-id--book">B</span> Book</span>
+  <span class="pub-legend-item"><span class="pub-id pub-id--preprint">P</span> Preprint</span>
+</div>
+
+{% assign active_year = '' %}
+
+{% for pub in sorted_pubs %}
+  {% assign year = pub.date | date: '%Y' %}
+  {% if year != active_year %}
+    {% unless active_year == '' %}</div>{% endunless %}
+    <h2 class="pub-year">{{ year }}</h2>
+    <div class="pub-year-entries">
+    {% assign active_year = year %}
+  {% endif %}
+
+  {% assign cat = pub.category | default: '' | downcase | strip %}
+  {% if cat == 'manuscripts' or cat == 'journal' or cat == 'journals' %}
+    {% assign prefix = 'J' %}
+    {% assign type_name = 'journal' %}
+    {% assign number = journals_left %}
+    {% assign journals_left = journals_left | minus: 1 %}
+  {% elsif cat == 'conferences' or cat == 'conference' %}
+    {% assign prefix = 'C' %}
+    {% assign type_name = 'conference' %}
+    {% assign number = conferences_left %}
+    {% assign conferences_left = conferences_left | minus: 1 %}
+  {% elsif cat == 'thesis' or cat == 'theses' %}
+    {% assign prefix = 'T' %}
+    {% assign type_name = 'thesis' %}
+    {% assign number = theses_left %}
+    {% assign theses_left = theses_left | minus: 1 %}
+  {% elsif cat == 'books' or cat == 'book' %}
+    {% assign prefix = 'B' %}
+    {% assign type_name = 'book' %}
+    {% assign number = books_left %}
+    {% assign books_left = books_left | minus: 1 %}
+  {% elsif cat == 'preprints' or cat == 'preprint' %}
+    {% assign prefix = 'P' %}
+    {% assign type_name = 'preprint' %}
+    {% assign number = preprints_left %}
+    {% assign preprints_left = preprints_left | minus: 1 %}
+  {% else %}
+    {% assign prefix = 'O' %}
+    {% assign type_name = 'other' %}
+    {% assign number = others_left %}
+    {% assign others_left = others_left | minus: 1 %}
+  {% endif %}
+
+  <article class="pub-entry">
+    {% assign global_number = sorted_pubs.size | minus: forloop.index0 %}
+    <span class="pub-global-number" aria-label="Publication number {{ global_number }}">{{ global_number }}.</span>
+    <div class="pub-marker">
+      <span class="pub-id pub-id--{{ type_name }}" title="{{ type_name | capitalize }} publication">{{ prefix }}{{ number }}</span>
+    </div>
+    <div class="pub-main">
+      {% if pub.citation %}
+        <div class="pub-citation">{{ pub.citation | markdownify }}</div>
+      {% else %}
+        <h3 class="pub-title"><a href="{{ pub.url | relative_url }}">{{ pub.title | escape }}</a></h3>
+        {% if pub.authors %}<div class="pub-authors">{{ pub.authors | markdownify }}</div>{% endif %}
+        {% if pub.venue %}<p class="pub-venue"><em>{{ pub.venue }}</em>, {{ year }}</p>{% endif %}
       {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
 
+      <div class="pub-actions">
+        {% if pub.paperurl %}<a href="{{ pub.paperurl }}">Paper</a>{% endif %}
+        {% if pub.doi %}<a href="https://doi.org/{{ pub.doi }}">DOI</a>{% endif %}
+        {% if pub.slidesurl %}<a href="{{ pub.slidesurl }}">Slides</a>{% endif %}
+        {% if pub.bibtexurl %}<a href="{{ pub.bibtexurl }}">BibTeX</a>{% endif %}
+        <a href="{{ pub.url | relative_url }}">Details</a>
+      </div>
 
+      {% if pub.abstract or pub.excerpt %}
+        <details class="pub-details">
+          <summary>Abstract</summary>
+          <div class="pub-details-content">
+            {% if pub.abstract %}{{ pub.abstract | markdownify }}{% else %}{{ pub.excerpt | markdownify }}{% endif %}
+          </div>
+        </details>
+      {% endif %}
+      {% if pub.bibtex %}
+        <details class="pub-details">
+          <summary>BibTeX</summary>
+          <pre>{{ pub.bibtex | escape }}</pre>
+        </details>
+      {% endif %}
+    </div>
+  </article>
+{% endfor %}
 
+{% unless active_year == '' %}</div>{% endunless %}
+
+{% if sorted_pubs.size == 0 %}<p>No publications are listed yet.</p>{% endif %}
+
+<style>
+.pub-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem 1rem;
+  margin: 1.35rem 0 1.6rem;
+  font-size: .82em;
+  align-items: center;
+}
+.pub-legend-item { display: inline-flex; align-items: center; gap: .35rem; }
+.pub-year { margin: 1.8rem 0 .9rem; padding-bottom: .35rem; border-bottom: 1px solid #ccc; }
+.pub-entry {
+  display: grid;
+  grid-template-columns: 1.65rem 3.4rem minmax(0, 1fr);
+  gap: .7rem;
+  padding: .85rem 0 1rem;
+  border-bottom: 1px solid rgba(128,128,128,.2);
+  font-size: .94em;
+}
+.pub-entry:last-child { border-bottom: 0; }
+.pub-global-number {
+  color: inherit;
+  opacity: .75;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  padding-top: .2rem;
+}
+.pub-marker { padding-top: .1rem; }
+.pub-id {
+  display: inline-block;
+  min-width: 2.7rem;
+  text-align: center;
+  border: 1px solid currentColor;
+  border-radius: .35rem;
+  padding: .16rem .32rem;
+  font-weight: 700;
+  font-size: .85em;
+  line-height: 1.55;
+  white-space: nowrap;
+}
+.pub-id--journal { color: #0e7490; background: #e0f2fe; }
+.pub-id--conference { color: #1d4ed8; background: #dbeafe; }
+.pub-id--thesis { color: #6d28d9; background: #ede9fe; }
+.pub-id--book { color: #92400e; background: #fef3c7; }
+.pub-id--preprint { color: #9d174d; background: #fce7f3; }
+.pub-id--other { color: #475569; background: #f1f5f9; }
+.pub-citation p, .pub-authors p { margin: 0 0 .3rem; line-height: 1.6; }
+.pub-title { font-size: 1em; line-height: 1.45; margin: 0 0 .35rem; }
+.pub-venue { margin: .25rem 0; opacity: .85; }
+.pub-actions { display: flex; flex-wrap: wrap; gap: .35rem .7rem; margin-top: .4rem; font-size: .87em; }
+.pub-actions a { text-decoration: underline; text-underline-offset: .15rem; }
+.pub-details { margin-top: .35rem; font-size: .86em; }
+.pub-details summary { cursor: pointer; color: #267ba9; }
+.pub-details-content { margin: .45rem 0; padding: .65rem .85rem; background: rgba(128,128,128,.07); border-radius: .25rem; }
+.pub-details-content p:last-child { margin-bottom: 0; }
+.pub-details pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9em; padding: .75rem; background: rgba(128,128,128,.08); }
+@media (max-width: 540px) {
+  .pub-entry { grid-template-columns: 1.35rem 2.8rem minmax(0, 1fr); gap: .5rem; }
+  .pub-id { min-width: 2.35rem; }
+}
+</style>

@@ -26,7 +26,7 @@ author:
   avatar           : "profile.png"
   name             : "Fabian Seiler"
   pronouns         : # example: "she/her"  
-  bio              : "Fabian Seiler is a Ph.D. researcher with the EclectX group at Heidelberg University, Germany. He received his B.Sc. in Electrical Engineering and Information Technology (2023) and M.Sc. in Embedded Systems (2025) from TU Wien, Austria. His research focuses on memristive in-memory computing, approximate computing, and the development of efficient computing architectures and design tools. "
+  bio              : "Ph.D. researcher at Heidelberg University, focusing on memristive circuits and systems, in-memory computing, approximate computing, and machine learning."
   location         : "Heidelberg, Germany"
   employer         : "Heidelberg University"
   uri              : # URL
@@ -42,7 +42,7 @@ author:
   semantic         : # URL
   ssrn             : # URL
   pubmed           : # URL
-  researchgate     : # URL
+  researchgate     : "https://www.researchgate.net/profile/Fabian-Seiler-2"
   scopus           : # URL
   zotero           : # URL
 
@@ -66,7 +66,7 @@ author:
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
-  linkedin         : # Username
+  linkedin         : "fabian-seiler-15848b182"
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username
@@ -90,6 +90,10 @@ publication_category:
     title: 'Journal Articles'    
   conferences:
     title: 'Conference Papers'
+  preprints:
+    title: 'Preprints'
+  thesis:
+    title: 'Thesis'
 
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews

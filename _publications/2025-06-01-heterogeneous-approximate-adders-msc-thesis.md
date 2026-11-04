@@ -12,8 +12,18 @@ doi: "10.34726/hss.2025.130182"
 paperurl: "https://repositum.tuwien.at/handle/20.500.12708/216944"
 excerpt: "Study of heterogeneous approximate full-adder combinations for memristive processing-in-array, using heuristic design-space optimization and circuit- and application-level evaluation."
 citation: '**F. Seiler**, "Heterogeneous Approximate Adders for Memristive Processing in Array," M.Sc. thesis (Diplomarbeit), TU Wien, 2025.'
+# BibTeX Source: TU Wien reposiTUm (not listed on EclectX)
+bibtex: |
+  @mastersthesis{Seiler2025Heterogeneous,
+    author  = {Seiler, Fabian},
+    title   = {Heterogeneous Approximate Adders for Memristive Processing in Array},
+    school  = {TU Wien},
+    year    = {2025},
+    type    = {Master's thesis},
+    doi     = {10.34726/hss.2025.130182},
+    url     = {https://repositum.tuwien.at/handle/20.500.12708/216944}
+  }
 ---
-
 My master's thesis, supervised by Prof. Nima TaheriNejad at TU Wien, explores
 heterogeneous approximate adders for memristive processing-in-array (PIA).
 It investigates combining different approximate full-adder implementations and

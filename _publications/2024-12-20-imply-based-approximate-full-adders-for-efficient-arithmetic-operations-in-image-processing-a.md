@@ -8,8 +8,18 @@ date: 2024-12-20
 venue: "arXiv:2412.15888 (preprint)"
 paperurl: "https://arxiv.org/pdf/2412.15888"
 citation: "M. Qiu, C. Fan, Gulafshan, S. Shakibhamedan, <strong>F. Seiler</strong>, N. TaheriNejad. (2024). &quot;IMPLY-based Approximate Full Adders for Efficient Arithmetic Operations in Image Processing and Machine Learning.&quot; <i>arXiv:2412.15888 (preprint)</i>."
+# BibTeX Source: arXiv:2412.15888 (not listed on EclectX)
+bibtex: |
+  @misc{Qiu2024SAPPI,
+    author        = {Qiu, Melanie and Fan, Caoyueshan and Gulafshan and Shakibhamedan, Salar and Seiler, Fabian and TaheriNejad, Nima},
+    title         = {IMPLY-based Approximate Full Adders for Efficient Arithmetic Operations in Image Processing and Machine Learning},
+    year          = {2024},
+    eprint        = {2412.15888},
+    archivePrefix = {arXiv},
+    primaryClass  = {cs.ET},
+    url           = {https://arxiv.org/abs/2412.15888}
+  }
 ---
-
 **Authors:** M. Qiu, C. Fan, Gulafshan, S. Shakibhamedan, **F. Seiler**, N. TaheriNejad
 
 **Venue:** arXiv:2412.15888 (preprint)

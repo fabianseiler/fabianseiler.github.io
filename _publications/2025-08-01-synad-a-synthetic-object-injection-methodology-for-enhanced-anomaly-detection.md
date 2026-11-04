@@ -8,8 +8,18 @@ date: 2025-08-01
 venue: "Eighth International Conference on Machine Vision and Applications (ICMVA 2025), Proc. SPIE 13734, 137340B"
 paperurl: "https://jantsch.se/AxelJantsch/papers/2025/KarelRusy-ICMVA.pdf"
 citation: "K. Rusý, <strong>F. Seiler</strong>, D. Breuss, A. Jantsch. (2025). &quot;SYNAD: A Synthetic Object Injection Methodology for Enhanced Anomaly Detection.&quot; <i>Eighth International Conference on Machine Vision and Applications (ICMVA 2025), Proc. SPIE 13734, 137340B</i>."
+# BibTeX Source: TU Wien reposiTUm (not listed on EclectX)
+bibtex: |
+  @inproceedings{Rusy2025SYNAD,
+    author    = {Rus{\'y}, Karel and Seiler, Fabian and Breuss, David and Jantsch, Axel},
+    title     = {SYNAD: A Synthetic Object Injection Methodology for Enhanced Anomaly Detection},
+    booktitle = {Eighth International Conference on Machine Vision and Applications (ICMVA 2025)},
+    volume    = {13734},
+    publisher = {SPIE},
+    year      = {2025},
+    doi       = {10.1117/12.3078677}
+  }
 ---
-
 **Authors:** K. Rusý, **F. Seiler**, D. Breuss, A. Jantsch
 
 **Venue:** Eighth International Conference on Machine Vision and Applications (ICMVA 2025), Proc. SPIE 13734, 137340B

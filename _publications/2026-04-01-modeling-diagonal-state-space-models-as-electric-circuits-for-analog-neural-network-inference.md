@@ -8,8 +8,18 @@ date: 2026-04-01
 venue: "ECML PKDD 2025 Workshops (Springer proceedings, published 2026), pp. 416–431"
 paperurl: "https://jantsch.se/AxelJantsch/papers/2025/MatthiasBittner-AnalogSSM.pdf"
 citation: "M. Bittner, D. Schnöll, <strong>F. Seiler</strong>, M. Wess, A. Jantsch. (2026). &quot;Modeling Diagonal State Space Models as Electric Circuits for Analog Neural Network Inference.&quot; <i>ECML PKDD 2025 Workshops (Springer proceedings, published 2026), pp. 416–431</i>."
+# BibTeX Source: TU Wien reposiTUm / Springer (not listed on EclectX)
+bibtex: |
+  @inproceedings{Bittner2026DiagonalSSM,
+    author    = {Bittner, Matthias and Schn{\"o}ll, Daniel and Seiler, Fabian and Wess, Matthias and Jantsch, Axel},
+    title     = {Modeling Diagonal State Space Models as Electric Circuits for Analog Neural Network Inference},
+    booktitle = {Machine Learning and Principles and Practice of Knowledge Discovery in Databases: ECML PKDD 2025 International Workshops, Revised Selected Papers, Part II},
+    pages     = {416--431},
+    publisher = {Springer},
+    year      = {2026},
+    doi       = {10.1007/978-3-032-19099-4_30}
+  }
 ---
-
 **Authors:** M. Bittner, D. Schnöll, **F. Seiler**, M. Wess, A. Jantsch
 
 **Venue:** ECML PKDD 2025 Workshops (Springer proceedings, published 2026), pp. 416–431

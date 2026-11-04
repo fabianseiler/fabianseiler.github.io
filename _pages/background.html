@@ -1,0 +1,134 @@
+---
+layout: single
+title: "Background"
+permalink: /background/
+author_profile: true
+---
+
+<div class="academic-background">
+  <p class="bg-intro">
+    I am a Ph.D. researcher at <strong>Heidelberg University</strong>, working at the intersection of
+    <strong>memristive in-memory computing</strong>, <strong>computer architecture</strong>, and
+    <strong>electronic design automation</strong>. My goal is to translate emerging device technologies and computing paradigms
+    into efficient, reliable, and practical computing systems.
+  </p>
+
+  <section class="bg-section" aria-labelledby="bg-expertise-title">
+    <h2 id="bg-expertise-title">Research Expertise</h2>
+    <div class="bg-expertise-grid">
+      <article class="bg-expertise-card bg-accent--teal">
+        <span class="bg-card-label">01 / COMPUTING</span>
+        <h3>Memristive In-Memory Computing</h3>
+        <p>Digital stateful logic, device-compatible primitives, arithmetic algorithms, and computing architectures.</p>
+      </article>
+      <article class="bg-expertise-card bg-accent--blue">
+        <span class="bg-card-label">02 / EFFICIENCY</span>
+        <h3>Emerging Computing</h3>
+        <p>Approximate arithmetic, stochastic computing, design-space exploration, and circuit-application co-design.</p>
+      </article>
+      <article class="bg-expertise-card bg-accent--violet">
+        <span class="bg-card-label">03 / DESIGN TOOLS</span>
+        <h3>Electronic Design Automation</h3>
+        <p>Circuit simulation, logic synthesis, automated validation, and open-source EDA workflows.</p>
+      </article>
+      <article class="bg-expertise-card bg-accent--amber">
+        <span class="bg-card-label">04 / ROBUSTNESS</span>
+        <h3>Reliability &amp; Cross-Layer Design</h3>
+        <p>Device variability, reliable logic operations, and optimization from devices to applications.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-section" aria-labelledby="bg-skills-title">
+    <h2 id="bg-skills-title">Technical Skills</h2>
+    <div class="bg-skills-grid">
+      <div class="bg-skill-row"><strong>Programming</strong><span>Python · MATLAB · C/C++</span></div>
+      <div class="bg-skill-row"><strong>Digital Hardware</strong><span>Verilog · FPGA · RISC-V </span></div>
+      <div class="bg-skill-row"><strong>Simulation &amp; EDA</strong><span>SPICE · Yosys · OpenROAD</span></div>
+      <div class="bg-skill-row"><strong>Machine Learning</strong><span>PyTorch · scikit-learn · computer vision</span></div>
+    </div>
+  </section>
+
+  <section class="bg-section" aria-labelledby="bg-interests-title">
+    <h2 id="bg-interests-title">Research Interests</h2>
+    <div class="bg-interest-list" aria-label="Research interests">
+      <span>Emerging Computing Paradigms</span>
+      <span>Digital &amp; Analog In-Memory Computing</span>
+      <span>Hardware Accelerators</span>
+      <span>Computer Architecture</span>
+      <span>Efficient Edge AI</span>
+      <span>Open-Source Hardware &amp; EDA</span>
+    </div>
+  </section>
+
+  <section class="bg-section" aria-labelledby="bg-education-title">
+    <h2 id="bg-education-title">Academic Background</h2>
+    <div class="bg-timeline">
+      <article class="bg-degree bg-accent--teal">
+        <div class="bg-degree-time">2025 – Present</div>
+        <div class="bg-degree-body">
+          <h3>Ph.D. in Computer Engineering</h3>
+          <p class="bg-institution">Heidelberg University, Germany · <a href="https://eclectx.org/">EclectX Research Group</a></p>
+          <p><strong>Research focus:</strong> Digital memristive in-memory computing, device-aware logic synthesis, reliability, and cross-layer hardware optimization.</p>
+        </div>
+      </article>
+      <article class="bg-degree bg-accent--blue">
+        <div class="bg-degree-time">2023 – 2025</div>
+        <div class="bg-degree-body">
+          <h3>M.Sc. in Embedded Systems (Hons)</h3>
+          <p class="bg-institution">TU Wien, Austria</p>
+          <p><strong>Focus:</strong> Digital circuits, computer architecture, machine learning, cyber-physical systems and computer vision.</p>
+          <p><strong>Master's thesis:</strong> <a href="https://doi.org/10.34726/hss.2025.130182"><em>Heterogeneous Approximate Adders for Memristive Processing in Array</em></a>.</p>
+        </div>
+      </article>
+      <article class="bg-degree bg-accent--violet">
+        <div class="bg-degree-time">2020 – 2023</div>
+        <div class="bg-degree-body">
+          <h3>B.Sc. in Electrical Engineering and Information Technology</h3>
+          <p class="bg-institution">TU Wien, Austria</p>
+          <p><strong>Focus:</strong> Electronics, digital systems, circuit design, and signal processing.</p>
+          <p><strong>Bachelor's thesis:</strong> <em>Approximate In-Memristor Computing using Semi-Serial IMPLY Adder Architecture</em>.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>
+
+<style>
+/* Scoped to the Background page to avoid overriding Academic Pages styling. */
+.academic-background { --bg-teal: #0f766e; --bg-blue: #2563eb; --bg-violet: #7c3aed; --bg-amber: #b45309; }
+.academic-background .bg-accent--teal { --bg-accent: var(--bg-teal); }
+.academic-background .bg-accent--blue { --bg-accent: var(--bg-blue); }
+.academic-background .bg-accent--violet { --bg-accent: var(--bg-violet); }
+.academic-background .bg-accent--amber { --bg-accent: var(--bg-amber); }
+.academic-background .bg-intro { font-size: 1.04em; line-height: 1.75; margin: .3rem 0 1.8rem; max-width: 55rem; }
+.academic-background .bg-intro strong { color: var(--bg-teal); }
+.academic-background .bg-section { margin: 2rem 0 2.4rem; }
+.academic-background .bg-section > h2 { margin: 0 0 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(128,128,128,.25); }
+.academic-background .bg-expertise-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+.academic-background .bg-expertise-card { border: 1px solid rgba(128,128,128,.18); border-top: 3px solid var(--bg-accent); border-radius: .55rem; padding: 1rem 1.05rem; background: color-mix(in srgb, var(--bg-accent) 6%, transparent); }
+.academic-background .bg-card-label { display: block; margin-bottom: .55rem; color: var(--bg-accent); font-size: .64em; font-weight: 750; letter-spacing: .075em; }
+.academic-background .bg-expertise-card h3 { font-size: .96em; line-height: 1.35; margin: 0 0 .4rem; }
+.academic-background .bg-expertise-card p { font-size: .84em; line-height: 1.55; margin: 0; }
+.academic-background .bg-skills-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+.academic-background .bg-skill-row { display: flex; flex-direction: column; gap: .24rem; padding: .8rem .9rem; border: 1px solid rgba(128,128,128,.18); border-radius: .4rem; }
+.academic-background .bg-skill-row strong { font-size: .81em; color: var(--bg-blue); }
+.academic-background .bg-skill-row span { font-size: .84em; line-height: 1.5; }
+.academic-background .bg-interest-list { display: flex; flex-wrap: wrap; gap: .5rem; }
+.academic-background .bg-interest-list span { display: inline-block; padding: .35rem .65rem; font-size: .77em; line-height: 1.4; border-radius: 999px; color: #4c1d95; background: #f3e8ff; border: 1px solid #ddd6fe; }
+.academic-background .bg-timeline { margin-left: .45rem; border-left: 2px solid rgba(128,128,128,.28); }
+.academic-background .bg-degree { position: relative; display: grid; grid-template-columns: 8.3rem minmax(0, 1fr); column-gap: 1.1rem; padding: .05rem 0 1.5rem 1.1rem; }
+.academic-background .bg-degree:last-child { padding-bottom: .25rem; }
+.academic-background .bg-degree::before { content: ''; position: absolute; width: .65rem; height: .65rem; left: -.4rem; top: .3rem; border: 2px solid var(--bg-accent); background: #fff; border-radius: 50%; }
+.academic-background .bg-degree-time { font-size: .77em; color: var(--bg-accent); font-weight: 700; padding-top: .27rem; }
+.academic-background .bg-degree-body h3 { font-size: 1.01em; margin: 0 0 .2rem; line-height: 1.4; }
+.academic-background .bg-degree-body p { font-size: .85em; line-height: 1.55; margin: .28rem 0; }
+.academic-background .bg-institution { opacity: .8; margin-bottom: .6rem !important; }
+.academic-background .bg-degree-body a { text-underline-offset: .14em; }
+@media (max-width: 700px) {
+  .academic-background .bg-expertise-grid, .academic-background .bg-skills-grid { grid-template-columns: minmax(0, 1fr); }
+  .academic-background .bg-degree { grid-template-columns: minmax(0, 1fr); gap: .15rem; }
+  .academic-background .bg-degree-time { padding-top: .05rem; }
+  .academic-background .bg-degree-body h3 { margin-top: .15rem; }
+}
+</style>

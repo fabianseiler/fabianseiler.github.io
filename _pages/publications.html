@@ -10,15 +10,9 @@ author_profile: true
 {% endif %}
 
 {% comment %}
-Sort ALL publications by date, showing newest first. Add global numbers 1..N
-in displayed order, plus independent category identifiers numbered oldest-to-newest.
-Recognized category values:
-  manuscripts, journal, journals  => J
-  conferences, conference         => C
-  thesis, theses                  => T
-  books, book                     => B
-  preprints, preprint             => P
-Unknown categories receive an O number, so they are not silently hidden.
+Publications are shown newest-first, grouped by year.
+Global and category numbers increase from oldest to newest.
+BibTeX uses each publication's embedded `bibtex` front matter field.
 {% endcomment %}
 
 {% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
@@ -56,7 +50,6 @@ Unknown categories receive an O number, so they are not silently hidden.
 </div>
 
 {% assign active_year = '' %}
-
 {% for pub in sorted_pubs %}
   {% assign year = pub.date | date: '%Y' %}
   {% if year != active_year %}
@@ -99,110 +92,253 @@ Unknown categories receive an O number, so they are not silently hidden.
     {% assign others_left = others_left | minus: 1 %}
   {% endif %}
 
-  <article class="pub-entry">
-    {% assign global_number = sorted_pubs.size | minus: forloop.index0 %}
+  {% assign global_number = sorted_pubs.size | minus: forloop.index0 %}
+  {% assign paper_href = pub.pdfurl | default: pub.paperurl %}
+
+  <article class="pub-entry pub-entry--{{ type_name }}">
     <span class="pub-global-number" aria-label="Publication number {{ global_number }}">{{ global_number }}.</span>
     <div class="pub-marker">
       <span class="pub-id pub-id--{{ type_name }}" title="{{ type_name | capitalize }} publication">{{ prefix }}{{ number }}</span>
     </div>
+
     <div class="pub-main">
-      {% if pub.citation %}
-        <div class="pub-citation">{{ pub.citation | markdownify }}</div>
-      {% else %}
-        <h3 class="pub-title"><a href="{{ pub.url | relative_url }}">{{ pub.title | escape }}</a></h3>
-        {% if pub.authors %}<div class="pub-authors">{{ pub.authors | markdownify }}</div>{% endif %}
-        {% if pub.venue %}<p class="pub-venue"><em>{{ pub.venue }}</em>, {{ year }}</p>{% endif %}
+      {% assign title_url = pub.url | relative_url %}
+
+      {% if pub.doi %}
+        {% assign doi_value = pub.doi | strip %}
+        {% if doi_value contains 'doi.org/' %}
+          {% assign title_url = doi_value %}
+        {% else %}
+          {% assign title_url = doi_value | prepend: 'https://doi.org/' %}
+        {% endif %}
+      {% elsif pub.paperurl %}
+        {% assign title_url = pub.paperurl %}
       {% endif %}
 
-      <div class="pub-actions">
-        {% if pub.paperurl %}<a href="{{ pub.paperurl }}">Paper</a>{% endif %}
-        {% if pub.doi %}<a href="https://doi.org/{{ pub.doi }}">DOI</a>{% endif %}
-        {% if pub.slidesurl %}<a href="{{ pub.slidesurl }}">Slides</a>{% endif %}
-        {% if pub.bibtexurl %}<a href="{{ pub.bibtexurl }}">BibTeX</a>{% endif %}
-        <a href="{{ pub.url | relative_url }}">Details</a>
-      </div>
+      <h3 class="pub-title">
+        <a href="{{ title_url }}" target="_blank" rel="noopener noreferrer">
+          {{ pub.title | escape }}
+        </a>
+      </h3>
 
-      {% if pub.abstract or pub.excerpt %}
-        <details class="pub-details">
-          <summary>Abstract</summary>
-          <div class="pub-details-content">
-            {% if pub.abstract %}{{ pub.abstract | markdownify }}{% else %}{{ pub.excerpt | markdownify }}{% endif %}
+      {% if pub.authors %}
+        <div class="pub-authors">{{ pub.authors | markdownify }}</div>
+      {% elsif pub.citation contains '. (' %}
+        {% assign author_display = pub.citation | split: '. (' | first %}
+        <div class="pub-authors">{{ author_display | markdownify }}</div>
+      {% elsif pub.citation %}
+        <div class="pub-citation">{{ pub.citation | markdownify }}</div>
+      {% endif %}
+
+      {% if pub.venue %}
+        <p class="pub-venue"><em>{{ pub.venue }}</em>, {{ year }}</p>
+      {% endif %}
+
+      <div class="pub-actions" aria-label="Actions for {{ pub.title | escape }}">
+        {% if paper_href %}
+          {% if paper_href contains '://' %}
+            <a class="pub-action pub-action--paper" href="{{ paper_href | escape }}" target="_blank" rel="noopener noreferrer">Paper</a>
+          {% else %}
+            <a class="pub-action pub-action--paper" href="{{ paper_href | relative_url }}" target="_blank" rel="noopener noreferrer">Paper</a>
+          {% endif %}
+        {% else %}
+          <span class="pub-action pub-action--disabled" aria-disabled="true" title="No paper URL available">Paper</span>
+        {% endif %}
+
+        <a class="pub-action" href="{{ pub.url | relative_url }}">Details</a>
+
+        <details class="pub-bibtex">
+          <summary class="pub-action pub-action--bibtex">BibTeX <span class="pub-chevron" aria-hidden="true"></span></summary>
+          <div class="pub-bibtex-panel">
+            <div class="pub-bibtex-heading">
+              <strong>BibTeX citation</strong>
+              {% if pub.bibtex %}
+                <button type="button" class="pub-copy-bibtex">Copy</button>
+              {% endif %}
+            </div>
+            {% if pub.bibtex %}
+              <pre class="pub-bibtex-code"><code>{{ pub.bibtex | strip | escape }}</code></pre>
+            {% else %}
+              <p class="pub-bibtex-missing">BibTeX is not available for this publication yet. Add a <code>bibtex: |</code> field to its Markdown front matter.</p>
+            {% endif %}
+            <span class="pub-copy-status" role="status" aria-live="polite"></span>
           </div>
         </details>
-      {% endif %}
-      {% if pub.bibtex %}
-        <details class="pub-details">
-          <summary>BibTeX</summary>
-          <pre>{{ pub.bibtex | escape }}</pre>
-        </details>
-      {% endif %}
+      </div>
     </div>
   </article>
 {% endfor %}
-
 {% unless active_year == '' %}</div>{% endunless %}
-
 {% if sorted_pubs.size == 0 %}<p>No publications are listed yet.</p>{% endif %}
 
 <style>
-.pub-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .55rem 1rem;
-  margin: 1.35rem 0 1.6rem;
-  font-size: .82em;
-  align-items: center;
-}
-.pub-legend-item { display: inline-flex; align-items: center; gap: .35rem; }
-.pub-year { margin: 1.8rem 0 .9rem; padding-bottom: .35rem; border-bottom: 1px solid #ccc; }
+/* Colors match the Background page: teal, blue, purple, amber, and rose. */
+.pub-legend { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem 1rem; margin:1.2rem 0 1.7rem; font-size:.82em; }
+.pub-legend-item { display:inline-flex; align-items:center; gap:.4rem; }
+.pub-year { margin:2rem 0 1rem; padding-bottom:.4rem; border-bottom:1px solid rgba(128,128,128,.28); }
+.pub-year-entries { display:grid; gap:.85rem; }
 .pub-entry {
-  display: grid;
-  grid-template-columns: 1.65rem 3.4rem minmax(0, 1fr);
-  gap: .7rem;
-  padding: .85rem 0 1rem;
-  border-bottom: 1px solid rgba(128,128,128,.2);
-  font-size: .94em;
+  --pub-accent:#64748b;
+  --pub-tint:rgba(100,116,139,.08);
+  display:grid;
+  grid-template-columns:1.7rem 3.15rem minmax(0,1fr);
+  gap:.65rem;
+  align-items:start;
+  padding:1rem 1.1rem;
+  border:1px solid rgba(128,128,128,.2);
+  border-left:4px solid var(--pub-accent);
+  border-radius:10px;
+  background:linear-gradient(105deg,var(--pub-tint),rgba(128,128,128,.025) 70%);
+  box-shadow:0 2px 7px rgba(0,0,0,.035);
+  font-size:.94em;
 }
-.pub-entry:last-child { border-bottom: 0; }
-.pub-global-number {
-  color: inherit;
-  opacity: .75;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-  padding-top: .2rem;
+.pub-entry--journal { --pub-accent:#0f766e; --pub-tint:rgba(15,118,110,.09); }
+.pub-entry--conference { --pub-accent:#2563eb; --pub-tint:rgba(37,99,235,.085); }
+.pub-entry--thesis { --pub-accent:#7c3aed; --pub-tint:rgba(124,58,237,.085); }
+.pub-entry--book { --pub-accent:#b45309; --pub-tint:rgba(180,83,9,.085); }
+.pub-entry--preprint { --pub-accent:#be185d; --pub-tint:rgba(190,24,93,.085); }
+.pub-entry--other { --pub-accent:#64748b; --pub-tint:rgba(100,116,139,.08); }
+.pub-global-number { opacity:.72; font-weight:600; font-variant-numeric:tabular-nums; text-align:right; padding-top:.22rem; }
+.pub-marker { padding-top:.08rem; }
+.pub-id { display:inline-block; min-width:2.7rem; padding:.14rem .38rem; border-radius:5px; border:1px solid currentColor; font-size:.82em; font-weight:700; line-height:1.65; text-align:center; white-space:nowrap; }
+.pub-id--journal { color:#0f766e; background:#e7f6f2; }
+.pub-id--conference { color:#2563eb; background:#eff6ff; }
+.pub-id--thesis { color:#7c3aed; background:#f5f0ff; }
+.pub-id--book { color:#b45309; background:#fff5e5; }
+.pub-id--preprint { color:#be185d; background:#fce7f3; }
+.pub-id--other { color:#475569; background:#f1f5f9; }
+.pub-main { min-width:0; overflow-wrap:anywhere; }
+.pub-title { font-size:1.04em; line-height:1.45; margin:0 0 .35rem; }
+.pub-citation p, .pub-authors p { margin:0 0 .4rem; line-height:1.6; }
+.pub-venue { margin:.25rem 0; opacity:.85; }
+.pub-actions { display:flex; flex-wrap:wrap; align-items:flex-start; gap:.5rem; margin-top:.85rem; }
+.pub-action {
+  appearance:none;
+  box-sizing:border-box;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.4rem;
+  min-width:5.5rem;
+  padding:.38rem .78rem;
+  border:1px solid var(--pub-accent);
+  border-radius:6px;
+  background:transparent;
+  color:var(--pub-accent);
+  font:inherit;
+  font-size:.82em;
+  font-weight:600;
+  line-height:1.4;
+  text-decoration:none !important;
+  cursor:pointer;
+  white-space:nowrap;
 }
-.pub-marker { padding-top: .1rem; }
-.pub-id {
-  display: inline-block;
-  min-width: 2.7rem;
-  text-align: center;
-  border: 1px solid currentColor;
-  border-radius: .35rem;
-  padding: .16rem .32rem;
-  font-weight: 700;
-  font-size: .85em;
-  line-height: 1.55;
-  white-space: nowrap;
+.pub-action--paper { color:#fff !important; background:var(--pub-accent); }
+.pub-action:hover:not(.pub-action--disabled),
+.pub-action:focus-visible:not(.pub-action--disabled) { background:var(--pub-tint); color:var(--pub-accent) !important; text-decoration:none; }
+.pub-action--disabled { opacity:.42; cursor:not-allowed; border-style:dashed; }
+.pub-bibtex { position:relative; }
+.pub-bibtex > summary { list-style:none; user-select:none; }
+.pub-bibtex > summary::-webkit-details-marker { display:none; }
+.pub-bibtex > summary::marker { content:""; }
+.pub-chevron { width:.42rem; height:.42rem; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); transition:transform .15s ease; margin-top:-.18rem; }
+.pub-bibtex[open] .pub-chevron { transform:rotate(225deg); margin-top:.14rem; }
+.pub-bibtex[open] > summary { background:var(--pub-tint); }
+.pub-bibtex-panel {
+  position:absolute;
+  z-index:30;
+  top:calc(100% + .4rem);
+  right:0;
+  width:min(34rem, calc(100vw - 2.5rem));
+  box-sizing:border-box;
+  padding:.9rem;
+  background:#fff;
+  color:#1f2937;
+  border:1px solid rgba(128,128,128,.3);
+  border-top:3px solid var(--pub-accent);
+  border-radius:8px;
+  box-shadow:0 12px 30px rgba(0,0,0,.17);
 }
-.pub-id--journal { color: #0e7490; background: #e0f2fe; }
-.pub-id--conference { color: #1d4ed8; background: #dbeafe; }
-.pub-id--thesis { color: #6d28d9; background: #ede9fe; }
-.pub-id--book { color: #92400e; background: #fef3c7; }
-.pub-id--preprint { color: #9d174d; background: #fce7f3; }
-.pub-id--other { color: #475569; background: #f1f5f9; }
-.pub-citation p, .pub-authors p { margin: 0 0 .3rem; line-height: 1.6; }
-.pub-title { font-size: 1em; line-height: 1.45; margin: 0 0 .35rem; }
-.pub-venue { margin: .25rem 0; opacity: .85; }
-.pub-actions { display: flex; flex-wrap: wrap; gap: .35rem .7rem; margin-top: .4rem; font-size: .87em; }
-.pub-actions a { text-decoration: underline; text-underline-offset: .15rem; }
-.pub-details { margin-top: .35rem; font-size: .86em; }
-.pub-details summary { cursor: pointer; color: #267ba9; }
-.pub-details-content { margin: .45rem 0; padding: .65rem .85rem; background: rgba(128,128,128,.07); border-radius: .25rem; }
-.pub-details-content p:last-child { margin-bottom: 0; }
-.pub-details pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9em; padding: .75rem; background: rgba(128,128,128,.08); }
-@media (max-width: 540px) {
-  .pub-entry { grid-template-columns: 1.35rem 2.8rem minmax(0, 1fr); gap: .5rem; }
-  .pub-id { min-width: 2.35rem; }
+.pub-bibtex-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.6rem; font-size:.9em; }
+.pub-copy-bibtex { border:1px solid var(--pub-accent); background:var(--pub-tint); color:var(--pub-accent); border-radius:5px; padding:.3rem .7rem; font:inherit; font-size:.9em; font-weight:600; cursor:pointer; }
+.pub-copy-bibtex:hover, .pub-copy-bibtex:focus-visible { background:#f3f4f6; }
+.pub-bibtex-code { margin:.7rem 0 .3rem; padding:.75rem; border-radius:5px; max-height:20rem; overflow:auto; white-space:pre; font-size:.78em; line-height:1.5; background:#f3f4f6; color:#111827; }
+.pub-bibtex-code code { background:transparent; padding:0; color:inherit; font-size:inherit; }
+.pub-bibtex-missing { margin:.8rem 0 .2rem; font-size:.85em; }
+.pub-copy-status { display:block; font-size:.78em; min-height:1.1em; color:#166534; }
+@media (max-width:700px) {
+  /* Mobile: expand in document flow rather than overlaying neighboring cards. */
+  .pub-bibtex[open] { flex-basis:100%; }
+  .pub-bibtex[open] > summary { width:max-content; }
+  .pub-bibtex-panel { position:static; width:100%; margin-top:.5rem; box-shadow:none; }
+}
+@media (max-width:540px) {
+  .pub-entry { grid-template-columns:1.4rem 2.6rem minmax(0,1fr); gap:.42rem; padding:.85rem .7rem; }
+  .pub-id { min-width:2.3rem; padding:.12rem .25rem; }
+  .pub-legend { gap:.5rem .8rem; }
+  .pub-action { min-width:0; padding:.35rem .55rem; }
 }
 </style>
+
+<script>
+// Native <details> handles the dropdown; JavaScript is needed only for Copy.
+(function () {
+  'use strict';
+
+  document.addEventListener('click', function (event) {
+    // Close other open BibTeX menus when opening a new one.
+    var summary = event.target.closest('.pub-bibtex > summary');
+    if (summary) {
+      var current = summary.parentElement;
+      document.querySelectorAll('.pub-bibtex[open]').forEach(function (details) {
+        if (details !== current) details.open = false;
+      });
+      return;
+    }
+
+    var button = event.target.closest('.pub-copy-bibtex');
+    if (!button) return;
+
+    var details = button.closest('.pub-bibtex');
+    var code = details && details.querySelector('.pub-bibtex-code code');
+    var status = details && details.querySelector('.pub-copy-status');
+    if (!code) return;
+    var bibtex = code.textContent.trim();
+
+    function report(message) {
+      if (status) status.textContent = message;
+    }
+
+    function selectCode() {
+      var range = document.createRange();
+      range.selectNodeContents(code);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    async function copyText() {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(bibtex);
+        } else {
+          var field = document.createElement('textarea');
+          field.value = bibtex;
+          field.style.position = 'fixed';
+          field.style.left = '-9999px';
+          document.body.appendChild(field);
+          field.select();
+          var copied = document.execCommand('copy');
+          field.remove();
+          if (!copied) throw new Error('Copy command failed');
+        }
+        report('Copied to clipboard!');
+      } catch (err) {
+        selectCode();
+        report('Text selected. Press Ctrl+C to copy.');
+      }
+    }
+    copyText();
+  });
+})();
+</script>

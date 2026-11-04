@@ -8,8 +8,20 @@ date: 2024-11-01
 venue: "IEEE Transactions on Circuits and Systems I: Regular Papers, 71(11), 5141–5154"
 paperurl: "https://eclectx.org/Publications/C59.pdf"
 citation: "<strong>F. Seiler</strong>, N. TaheriNejad. (2024). &quot;Accelerated Image Processing Through IMPLY-Based NoCarry Approximated Adders.&quot; <i>IEEE Transactions on Circuits and Systems I: Regular Papers, 71(11), 5141–5154</i>."
+# BibTeX Source: EclectX [J31]
+bibtex: |
+  @ARTICLE{seiler2024nocarry,
+    author={Seiler, Fabian and TaheriNejad, Nima},
+    journal={IEEE Transactions on Circuits and Systems I: Regular Papers},
+    title={Accelerated Image Processing Through IMPLY-Based NoCarry Approximated Adders},
+    year={2024},
+    volume={71},
+    number={11},
+    pages={5141-5154},
+    keywords={Memristors;Adders;Topology;Logic;Measurement;Image processing;Energy efficiency;Approximate;memristor;in-memory computing;IMPLY;energy efficiency;image processing},
+    doi={10.1109/TCSI.2024.3426926}
+  }
 ---
-
 **Authors:** **F. Seiler**, N. TaheriNejad
 
 **Venue:** IEEE Transactions on Circuits and Systems I: Regular Papers, 71(11), 5141–5154
